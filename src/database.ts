@@ -22,7 +22,7 @@ const {
 //   password: POSTGRES_PASSWORD,
 // });
 
-let client;
+let client: Pool;
 if (ENV === "test") {
   client = new Pool({
     host: POSTGRES_HOST,
@@ -43,4 +43,4 @@ if (ENV === "dev") {
   });
 }
 
-export default client;
+export { client };
