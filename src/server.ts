@@ -14,6 +14,7 @@ app.listen(3000, function () {
   console.log(`starting app on: ${address}`);
 });
 
+//#region Product routes
 // This is the product INDEX route
 app.get("/product", (_req: express.Request, res: express.Response) => {
   try {
@@ -47,7 +48,9 @@ app.post("/product", (req: express.Request, res: express.Response) => {
     res.json(err);
   }
 });
+//#endregion
 
+//#region User routes
 // This is the users INDEX route
 app.get("/user", (_req: express.Request, res: express.Response) => {
   try {
@@ -81,3 +84,4 @@ app.post("/new-user", (req: express.Request, res: express.Response) => {
     res.json(err);
   }
 });
+//#endregion
