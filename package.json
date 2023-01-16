@@ -26,6 +26,7 @@
     "@types/nodemon": "^1.19.2",
     "@types/pg": "^8.6.6",
     "db-migrate": "^0.11.13",
+    "db-migrate-pg": "^1.2.2",
     "jasmine": "^4.5.0",
     "jasmine-spec-reporter": "^7.0.0",
     "jasmine-ts": "^0.4.0",
