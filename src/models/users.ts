@@ -33,7 +33,7 @@ export class UserStore {
   async show(id: string): Promise<User> {
     try {
       const conn = await client.connect();
-      const sql = `SELECT * FROM user_table WHERE id=($1)`;
+      const sql = `SELECT * FROM user_table WHERE id=${id}`;
       const result = await conn.query(sql);
       conn.release();
       return result.rows[0];
@@ -46,8 +46,7 @@ export class UserStore {
     try {
       //@ts-ignore
       const conn = await client.connect();
-      const sql =
-        "INSERT INTO user_table(first_name, last_name, password) VALUES ($1, $2) RETURNING *";
+      const sql = `INSERT INTO user_table(first_name, last_name, password) VALUES (${u.firstName}, ${u.lastName}) RETURNING *`;
       const hashPassword = bcrypt.hashSync(
         u.password + this.pepper,
         this.saltRounds
@@ -64,7 +63,7 @@ export class UserStore {
 
   async authenticate(firstName: string, password: string) {
     const conn = await client.connect();
-    const sql = "SELECT password FROM user_table WHERE first_name=($1)";
+    const sql = `SELECT password FROM user_table WHERE first_name=(${firstName})`;
 
     const result = await conn.query(sql, [firstName]);
 
