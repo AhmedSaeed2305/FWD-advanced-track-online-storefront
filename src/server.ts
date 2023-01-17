@@ -1,10 +1,14 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
 
 const app: express.Application = express();
 const address: string = "0.0.0.0:3000";
 
 app.use(bodyParser.json());
+
+//CORS ENABLED
+app.use(cors());
 
 app.get("/", function (req: express.Request, res: express.Response) {
   res.send("Hello World!");
@@ -84,4 +88,9 @@ app.post("/new-user", (req: express.Request, res: express.Response) => {
     res.json(err);
   }
 });
+//#endregion
+
+//#region
+//This the order INDEX route
+
 //#endregion
