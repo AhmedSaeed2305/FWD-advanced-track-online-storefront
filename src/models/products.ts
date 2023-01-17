@@ -23,7 +23,9 @@ export class ProductStore {
   async show(id: string): Promise<Product> {
     try {
       const conn = await client.connect();
-      const sql = `SELECT * FROM products_table WHERE id=${id};`;
+      const sql = `SELECT * FROM products_table WHERE product_id=${parseInt(
+        id
+      )};`;
       const result = await conn.query(sql);
       conn.release();
       return result.rows[0];
@@ -39,7 +41,9 @@ export class ProductStore {
   ): Promise<Product> {
     try {
       const conn = await client.connect();
-      const sql = `INSERT INTO products_table(name, price, category) VALUES (${name}, ${price}, ${category}) RETURNING *;`;
+      const sql = `INSERT INTO products_table(name, price, category) VALUES (${name}, ${parseInt(
+        price
+      )}, ${category}) RETURNING *;`;
       const result = await conn.query(sql);
       conn.release();
       return result.rows[0];

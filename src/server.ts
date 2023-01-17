@@ -1,6 +1,9 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import { Product, ProductStore } from "./models/products";
+import { User, UserStore } from "./models/users";
+import { Order, OrderStore } from "./models/orders";
 
 const app: express.Application = express();
 const address: string = "0.0.0.0:3000";
@@ -22,7 +25,10 @@ app.listen(3000, function () {
 // This is the product INDEX route
 app.get("/product", (_req: express.Request, res: express.Response) => {
   try {
-    res.send("this is the INDEX route");
+    const productStore = new ProductStore();
+    productStore.index().then((resolve) => {
+      res.send(resolve);
+    });
   } catch (err) {
     res.status(400);
     res.json(err);
@@ -30,10 +36,15 @@ app.get("/product", (_req: express.Request, res: express.Response) => {
 });
 
 // This is the product SHOW route
-app.get("/product/:id", (_req: express.Request, res: express.Response) => {
+app.get("/product/:id", (req: express.Request, res: express.Response) => {
   try {
-    res.send("this is the SHOW route");
+    const productStore = new ProductStore();
+    productStore.show(req.query.id as string).then((resolve) => {
+      console.log(resolve);
+      res.send(resolve);
+    });
   } catch (err) {
+    console.log(err);
     res.status(400);
     res.json(err);
   }
@@ -66,7 +77,7 @@ app.get("/user", (_req: express.Request, res: express.Response) => {
 });
 
 // This is the users SHOW route
-app.get("/user/:id", (_req: express.Request, res: express.Response) => {
+app.get("/user/:id", (req: express.Request, res: express.Response) => {
   try {
     res.send("this is the user SHOW route");
   } catch (err) {
@@ -92,7 +103,7 @@ app.post("/new-user", (req: express.Request, res: express.Response) => {
 
 //#region
 //This the order SHOW route
-app.get("/order/:userId", (_req: express.Request, res: express.Response) => {
+app.get("/order/:userId", (req: express.Request, res: express.Response) => {
   try {
     res.send("this is the order SHOW route");
   } catch (err) {

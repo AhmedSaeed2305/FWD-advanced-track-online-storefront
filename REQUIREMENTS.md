@@ -9,7 +9,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 #### Products
 
 - Index "/product" [GET]
-- Show "/product/:id" [GET]
+- Show "/product/:id?id=" [GET]
 - Create [token required] "/product" [POST]
 - [OPTIONAL] Top 5 most popular products
 - [OPTIONAL] Products by category (args: product category)
