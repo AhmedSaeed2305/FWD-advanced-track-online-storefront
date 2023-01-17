@@ -91,6 +91,13 @@ app.post("/new-user", (req: express.Request, res: express.Response) => {
 //#endregion
 
 //#region
-//This the order INDEX route
-
+//This the order SHOW route
+app.get("/order/:userId", (_req: express.Request, res: express.Response) => {
+  try {
+    res.send("this is the order SHOW route");
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+});
 //#endregion
