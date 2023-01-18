@@ -28,10 +28,8 @@ const show = async (req: express.Request, res: express.Response) => {
 const create = async (req: express.Request, res: express.Response) => {
   try {
     const user = await usersStore.create(req.body);
-    console.log(user);
     res.json(user);
   } catch (err) {
-    console.log(err);
     res.status(400);
     res.json(err);
   }
