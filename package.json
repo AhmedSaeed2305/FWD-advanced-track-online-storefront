@@ -27,6 +27,7 @@
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.15",
     "@types/jasmine": "^4.3.1",
+    "@types/jsonwebtoken": "^9.0.1",
     "@types/nodemon": "^1.19.2",
     "@types/pg": "^8.6.6",
     "db-migrate": "^0.11.13",

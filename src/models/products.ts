@@ -41,9 +41,9 @@ export class ProductStore {
   ): Promise<Product> {
     try {
       const conn = await client.connect();
-      const sql = `INSERT INTO products_table(name, price, category) VALUES (${name}, ${parseInt(
+      const sql = `INSERT INTO products_table(name, price, category) VALUES ('${name}', ${parseInt(
         price
-      )}, ${category}) RETURNING *;`;
+      )}, '${category}') RETURNING *;`;
       const result = await conn.query(sql);
       conn.release();
       return result.rows[0];
