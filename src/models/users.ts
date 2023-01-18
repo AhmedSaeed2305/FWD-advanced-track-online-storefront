@@ -4,7 +4,7 @@ import { client } from "../database";
 //prettier-ignore
 const { 
     BYCRPT_PASSWORD,
-    SALT_ROUNDS = 10,
+    SALT_ROUNDS = "",
 } = process.env;
 
 export type User = {
@@ -33,7 +33,7 @@ export class UserStore {
   async show(id: string): Promise<User> {
     try {
       const conn = await client.connect();
-      const sql = `SELECT * FROM user_table WHERE id=${id};`;
+      const sql = `SELECT * FROM user_table WHERE user_id=${id};`;
       const result = await conn.query(sql);
       conn.release();
       return result.rows[0];
@@ -46,13 +46,13 @@ export class UserStore {
     try {
       //@ts-ignore
       const conn = await client.connect();
-      const sql = `INSERT INTO user_table(first_name, last_name, password) VALUES (${u.firstName}, ${u.lastName}) RETURNING *;`;
       const hashPassword = bcrypt.hashSync(
         u.password + this.pepper,
-        this.saltRounds
+        parseInt(this.saltRounds)
       );
 
-      const result = await conn.query(sql, [u.firstName, hashPassword]);
+      const sql = `INSERT INTO user_table(first_name, last_name, password) VALUES ('${u.firstName}', '${u.lastName}', '${hashPassword}') RETURNING *;`;
+      const result = await conn.query(sql);
       const user = result.rows[0];
       conn.release();
       return user;
@@ -63,7 +63,7 @@ export class UserStore {
 
   async authenticate(firstName: string, password: string) {
     const conn = await client.connect();
-    const sql = `SELECT password FROM user_table WHERE first_name=(${firstName});`;
+    const sql = `SELECT password FROM user_table WHERE first_name=${firstName};`;
 
     const result = await conn.query(sql, [firstName]);
 

@@ -10,14 +10,14 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 - Index "/products" [GET]
 - Show "/product?id=" [GET]
-- Create [token required] "/product" [POST]
+- Create [token required] "/new-product" [POST]
 - [OPTIONAL] Top 5 most popular products
 - [OPTIONAL] Products by category (args: product category)
 
 #### Users
 
-- Index [token required] "/user" [GET]
-- Show [token required] "user/:id" [GET]
+- Index [token required] "/users" [GET]
+- Show [token required] "user?id=" [GET]
 - Create N[token required] "/new-user" [POST]
 
 #### Orders
