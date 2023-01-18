@@ -23,7 +23,7 @@ app.listen(3000, function () {
 
 //#region Product routes
 // This is the product INDEX route
-app.get("/product", (_req: express.Request, res: express.Response) => {
+app.get("/products", (_req: express.Request, res: express.Response) => {
   try {
     const productStore = new ProductStore();
     productStore.index().then((resolve) => {
@@ -36,7 +36,7 @@ app.get("/product", (_req: express.Request, res: express.Response) => {
 });
 
 // This is the product SHOW route
-app.get("/product/:id", (req: express.Request, res: express.Response) => {
+app.get("/product", (req: express.Request, res: express.Response) => {
   try {
     const productStore = new ProductStore();
     productStore.show(req.query.id as string).then((resolve) => {
