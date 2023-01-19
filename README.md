@@ -1,5 +1,74 @@
 # Storefront Backend Project
 
+# node_modules folder and .env file are not inculded
+
+### the database runs on port: 3001
+
+### the server runs on prot:3000
+
+# Connect to database
+
+1 - Start by creating .env file which is excluded from this repo that contains the following environment variables:
+
+POSTGRES_HOST=127.0.0.1
+POSTGRES_PORT=3001
+POSTGRES_DB=online_storefront
+POSTGRES_TEST_DB=online_storefront_test
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password123
+ENV=test
+BCRYPT_PASSWORD=extraPassword
+SALT_ROUNDS=10
+TOKEN_SECRET=secretString
+
+2 - Create a database on postgresql database with the name "online_storefront
+3 - install all the dependencies for the project by using the following command: "npm install"
+4 - Then you can run the following command in the console to create the tables required for the database and link them together: "db-migrate up"
+
+## schema structure
+
+1 - Table: user_table(user_id: serial perimary key, first_name: varchar, last_name: varchar, password: varchar)
+2 - Table: products_table(product_id: serial perimary key, name: varchar, price: integer, category: varchar)
+3 - Table: orders_table(id: serial perimary key, quantity: integer, status: boolean, user_id: integer [references user_table], product_id: integer [references products_table])
+
+# USERS model
+
+## After you can start using the provided end point to create a user and get a new JWT
+
+1 - Create [new JWT token generated] "/new-user" [POST]
+2 - first name, last name and password must be provided in the body of the request
+3 - the password will get hashed and will not be stored as entered
+4 - there is an authentication method for future password verifications to login
+
+## Next you can show or index all users using the following end points and you have to supply the JWT for each
+
+- Show [token required] "user?id=" [GET] id must be provided as a query params in the header
+- Index [token required] "/users" [GET]
+
+# PRODUCTS model
+
+## Then you can Create, get one product by id or get all products and you have to supply the JWT for each also
+
+1 - Create [token required] "/new-product" [POST] must provide name, price, category in the body of the request
+2 - Show "/product?id=" [GET] id must be provided as a query params in the header
+3 - Index "/products" [GET]
+
+# ORDERS model
+
+## Eventually you can Create new order or get current order or see all orders for a specific user with user id and with JWT
+
+- Create new order [token required] "/new-order" [POST] quantity, status: boolean, productId and userId must be provided in the body of the request
+- Current Order by user (args: user id)[token required] "/order/user-id?id=" [GET] id must be provided as a query params in the header
+- Show all orders by user Id [Token required] "/orders?id=" [GET] id must be provided as a query params in the header
+
+### to run unit tests "npm run test" script is used.
+
+### to run the server "npm start" script is used.
+
+## to build the ts files "npm run tsc" script is used.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 ## Getting Started
 
 This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
@@ -57,62 +126,3 @@ Before submitting, make sure that your project is complete with a `README.md`. Y
 Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-# node_modules folder and .env file are not inculded
-
-# Connect to data base
-
-- Start by creating .env file which is excluded from the repo that contains the following info:
-
-POSTGRES_HOST=127.0.0.1
-POSTGRES_PORT=3001
-POSTGRES_DB=online_storefront
-POSTGRES_TEST_DB=online_storefront_test
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=password123
-ENV=test
-BCRYPT_PASSWORD=extraPassword
-SALT_ROUNDS=10
-TOKEN_SECRET=secretString
-
-- Then you can run the following command to create the tables required for the dataBase and link them together: [db-migrate up]
-
-- Table: user_table(user_id: serial perimary key, first_name: varchar, last_name: varchar, password: varchar)
-- Table: products_table(product_id: serial perimary key, name: varchar, price: integer, category: varchar)
-- Table: orders_table(id: serial perimary key, quantity: integer, status: boolean, user_id: integer [references user_table], product_id: integer [references products_table])
-
-# USERS model
-
-## After you can start using the provided end point to create a user and get a new JWT
-
-1 - Create [new JWT token generated] "/new-user" [POST]
-2 - first name, last name and password must be provided in the body of the request
-3 - the password will get hashed and will not be stored as entered
-4 - there is an authentication method for future password verifications to login
-
-## Next you can show or index all users using the following end points and you have to supply the JWT for each
-
-- Show [token required] "user?id=" [GET] id must be provided as a query params in the header
-- Index [token required] "/users" [GET]
-
-# PRODUCTS model
-
-## Then you can Create, get one product by id or get all products and you have to supply the JWT for each also
-
-1 - Create [token required] "/new-product" [POST] must provide name, price, category in the body of the request
-2 - Show "/product?id=" [GET] id must be provided as a query params in the header
-3 - Index "/products" [GET]
-
-# ORDERS model
-
-## Eventually you can Create new order or get current order or see all orders for a specific user with user id and with JWT
-
-- Create new order [token required] "/new-order" [POST] quantity, status: boolean, productId and userId must be provided in the body of the request
-- Current Order by user (args: user id)[token required] "/order/user-id?id=" [GET] id must be provided as a query params in the header
-- Show all orders by user Id [Token required] "/orders?id=" [GET] id must be provided as a query params in the header
-
-### to run unit tests "npm run test" script is used.
-
-### to run the server "npm start" script is used.
-
-## to build the ts files "npm run tsc" script is used.

@@ -15,7 +15,7 @@ app.use(cors());
 
 // server main route function
 app.get("/", function (req: express.Request, res: express.Response) {
-  res.send("Hello World!");
+  res.send("Hello, This Ahmed's API for Online StoreFront project");
 });
 
 // Handlers method

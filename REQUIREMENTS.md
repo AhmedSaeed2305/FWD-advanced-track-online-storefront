@@ -50,3 +50,9 @@ These are the notes from a meeting with the frontend developer that describe wha
 - quantity of each product in the order
 - user_id
 - status of order (active or complete)
+
+## schema structure
+
+1 - Table: user_table(user_id: serial perimary key, first_name: varchar, last_name: varchar, password: varchar)
+2 - Table: products_table(product_id: serial perimary key, name: varchar, price: integer, category: varchar)
+3 - Table: orders_table(id: serial perimary key, quantity: integer, status: boolean, user_id: integer [references user_table], product_id: integer [references products_table])
