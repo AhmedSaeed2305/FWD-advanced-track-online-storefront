@@ -1,6 +1,8 @@
 import express from "express";
 import { Product, ProductStore } from "./../models/products";
 import jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 // instantiate the products object
 const productStore = new ProductStore();
