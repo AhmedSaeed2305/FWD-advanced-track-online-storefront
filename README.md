@@ -4,7 +4,7 @@
 
 ### the database runs on port: 3001
 
-### the server runs on prot:3000
+### the server runs on prot: 3000
 
 # Connect to database
 
