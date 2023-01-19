@@ -22,6 +22,8 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### Orders
 
+- Show all orders by user Id [Token required] "/orders?id=" [GET]
+- Create new order [token required] "new-order" [POST]
 - Current Order by user (args: user id)[token required] "/order/user-id?id=" [GET]
 - [OPTIONAL] Completed Orders by user (args: user id)[token required]
 
