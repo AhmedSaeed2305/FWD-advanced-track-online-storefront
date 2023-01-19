@@ -1,5 +1,6 @@
 import express from "express";
 import { Product, ProductStore } from "./../models/products";
+import jwt from "jsonwebtoken";
 
 // instantiate the products object
 const productStore = new ProductStore();
@@ -28,6 +29,14 @@ const show = async (req: express.Request, res: express.Response) => {
 
 // create method
 const create = async (req: express.Request, res: express.Response) => {
+  // JWT toekn verification
+  try {
+    jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
+  } catch (err) {
+    res.status(401);
+    res.json(`Invalid token ${err}`);
+    return;
+  }
   try {
     const product = await productStore.create(
       req.body.name,
