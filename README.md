@@ -56,17 +56,57 @@ Before submitting, make sure that your project is complete with a `README.md`. Y
 
 Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
 
-//////////////////////////////////////////////////////////
-CREATE TABLE products_table (Product_id SERIAL PRIMARY KEY, name VARCHAR(50), price integer, category VARCHAR(100));
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CREATE TABLE user_table (user_id SERIAL PRIMARY KEY, first_name VARCHAR(20), last_name VARCHAR(20), password VARCHAR(20));
+# node_modules folder and .env file are not inculded
 
-CREATE TABLE orders_table (id SERIAL PRIMARY KEY, quantity integer, product_id integer, user_id integer, status boolean);
+# Connect to data base
 
-ALTER TABLE orders_table ADD FOREIGN KEY (product_id) REFERENCES products_table(product_id);
+- Start by creating .env file which is excluded from the repo that contains the following info:
 
-ALTER TABLE orders_table ADD FOREIGN KEY (user_id) REFERENCES user_table(user_id);
+POSTGRES_HOST=127.0.0.1
+POSTGRES_PORT=3001
+POSTGRES_DB=online_storefront
+POSTGRES_TEST_DB=online_storefront_test
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password123
+ENV=test
+BCRYPT_PASSWORD=extraPassword
+SALT_ROUNDS=10
+TOKEN_SECRET=secretString
 
-DROP TABLE orders_table;
-DROP TABLE user_table;
-DROP TABLE products_table;
+- Then you can run the following command to create the tables required for the dataBase and link them together: [db-migrate up]
+
+- Table: user_table(user_id: serial perimary key, first_name: varchar, last_name: varchar, password: varchar)
+- Table: products_table(product_id: serial perimary key, name: varchar, price: integer, category: varchar)
+- Table: orders_table(id: serial perimary key, quantity: integer, status: boolean, user_id: integer [references user_table], product_id: integer [references products_table])
+
+## After you can start using the provided end point to create a user and get a new JWT
+
+- Create [new JWT token generated] "/new-user" [POST]
+- first name, last name and password must be provided
+- the password will get hashed and will not be stored as entered
+- there is an authentication method for future password verifications to login
+
+## Next you can show or index all users using the following end points and you have to supply the JWT for each
+
+- Index [token required] "/users" [GET]
+- Show [token required] "user?id=" [GET]
+
+## Then you can Create, get one product by id or get all products and you have to supply the JWT for each also
+
+- Index "/products" [GET]
+- Show "/product?id=" [GET]
+- Create [token required] "/new-product" [POST]
+
+## Eventually you can Create new order or get current order or see all orders for a specific user with user id and with JWT
+
+- Show all orders by user Id [Token required] "/orders?id=" [GET]
+- Create new order [token required] "new-order" [POST]
+- Current Order by user (args: user id)[token required] "/order/user-id?id=" [GET]
+
+### to run unit tests "npm run test" script is used.
+
+### to run the server "npm start" script is used.
+
+## to build the ts files "npm run tsc" script is used.
