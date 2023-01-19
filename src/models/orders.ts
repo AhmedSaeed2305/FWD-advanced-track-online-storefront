@@ -10,17 +10,19 @@ export type Order = {
 };
 
 export class OrderStore {
-  async index(): Promise<Order[]> {
+  // list all orders for the same user with User ID
+  async index(userId: string): Promise<Order[]> {
     try {
       const conn = await client.connect();
-      const sql = `SELECT * FROM orders_table;`;
+      const sql = `SELECT * FROM orders_table WHERE user_id=${userId};`;
       const result = await conn.query(sql);
       conn.release();
       return result.rows;
     } catch (err) {
-      throw new Error(`Couldn't get requested order, error: ${err}`);
+      throw new Error(`Couldn't get requested orders list, error: ${err}`);
     }
   }
+  // show current order by user with User ID
   async show(userId: string): Promise<Order> {
     try {
       const conn = await client.connect();
@@ -32,7 +34,7 @@ export class OrderStore {
       throw new Error(`Couldn't get requested order, error: ${err}`);
     }
   }
-
+  // create new orders
   async create(order: Order): Promise<Order> {
     try {
       const conn = await client.connect();
