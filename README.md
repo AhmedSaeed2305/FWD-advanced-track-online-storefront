@@ -81,29 +81,35 @@ TOKEN_SECRET=secretString
 - Table: products_table(product_id: serial perimary key, name: varchar, price: integer, category: varchar)
 - Table: orders_table(id: serial perimary key, quantity: integer, status: boolean, user_id: integer [references user_table], product_id: integer [references products_table])
 
+# USERS model
+
 ## After you can start using the provided end point to create a user and get a new JWT
 
-- Create [new JWT token generated] "/new-user" [POST]
-- first name, last name and password must be provided
-- the password will get hashed and will not be stored as entered
-- there is an authentication method for future password verifications to login
+1 - Create [new JWT token generated] "/new-user" [POST]
+2 - first name, last name and password must be provided in the body of the request
+3 - the password will get hashed and will not be stored as entered
+4 - there is an authentication method for future password verifications to login
 
 ## Next you can show or index all users using the following end points and you have to supply the JWT for each
 
+- Show [token required] "user?id=" [GET] id must be provided as a query params in the header
 - Index [token required] "/users" [GET]
-- Show [token required] "user?id=" [GET]
+
+# PRODUCTS model
 
 ## Then you can Create, get one product by id or get all products and you have to supply the JWT for each also
 
-- Index "/products" [GET]
-- Show "/product?id=" [GET]
-- Create [token required] "/new-product" [POST]
+1 - Create [token required] "/new-product" [POST] must provide name, price, category in the body of the request
+2 - Show "/product?id=" [GET] id must be provided as a query params in the header
+3 - Index "/products" [GET]
+
+# ORDERS model
 
 ## Eventually you can Create new order or get current order or see all orders for a specific user with user id and with JWT
 
-- Show all orders by user Id [Token required] "/orders?id=" [GET]
-- Create new order [token required] "new-order" [POST]
-- Current Order by user (args: user id)[token required] "/order/user-id?id=" [GET]
+- Create new order [token required] "/new-order" [POST] quantity, status: boolean, productId and userId must be provided in the body of the request
+- Current Order by user (args: user id)[token required] "/order/user-id?id=" [GET] id must be provided as a query params in the header
+- Show all orders by user Id [Token required] "/orders?id=" [GET] id must be provided as a query params in the header
 
 ### to run unit tests "npm run test" script is used.
 
