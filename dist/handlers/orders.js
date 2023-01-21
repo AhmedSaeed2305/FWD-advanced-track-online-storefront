@@ -85,7 +85,7 @@ var index = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
             case 0:
                 // JWT verification
                 try {
-                    jsonwebtoken_1.default.verify(req.body.token, process.env.TOKEN_SECRET);
+                    jsonwebtoken_1.default.verify(req.get("token"), process.env.TOKEN_SECRET);
                 }
                 catch (err) {
                     res.status(401);
@@ -118,7 +118,7 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
             case 0:
                 // JWT verification
                 try {
-                    jsonwebtoken_1.default.verify(req.body.token, process.env.TOKEN_SECRET);
+                    jsonwebtoken_1.default.verify(req.get("token"), process.env.TOKEN_SECRET);
                 }
                 catch (err) {
                     res.status(401);
@@ -176,10 +176,42 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
         }
     });
 }); };
+var addProducts = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var order, err_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                // JWT verification
+                try {
+                    jsonwebtoken_1.default.verify(req.body.token, process.env.TOKEN_SECRET);
+                }
+                catch (err) {
+                    res.status(401);
+                    res.json("Invalid token, ".concat(err));
+                    return [2 /*return*/];
+                }
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, ordersStore.addProducts(req.body)];
+            case 2:
+                order = _a.sent();
+                res.json(order);
+                return [3 /*break*/, 4];
+            case 3:
+                err_4 = _a.sent();
+                res.status(400);
+                res.json(err_4);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
 // routes handlers methods
 var ordersRoutes = function (app) {
     app.get("/orders", index);
     app.get("/order/user-id", show);
     app.post("/new-order", create);
+    app.post("/add-products", addProducts);
 };
 exports.default = ordersRoutes;

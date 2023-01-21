@@ -66,9 +66,9 @@ TOKEN_SECRET=secretString
 
 - Add more products to the order at this route [token required] "/add-products" [POST] quantity, orderId, productId and token must be provided in the body of the request
 
-### to run unit tests "npm run test" script is used.
-
 ### to run the server "npm start" script is used.
+
+### to run unit tests "npm run test" script is used.
 
 ## to build the ts files "npm run tsc" script is used.
 

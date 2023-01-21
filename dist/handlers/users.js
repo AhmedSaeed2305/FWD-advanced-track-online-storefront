@@ -76,7 +76,7 @@ var index = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
             case 0:
                 // JWT token verification
                 try {
-                    jsonwebtoken_1.default.verify(req.body.token, process.env.TOKEN_SECRET);
+                    jsonwebtoken_1.default.verify(req.get("token"), process.env.TOKEN_SECRET);
                 }
                 catch (err) {
                     res.status(401);
@@ -108,7 +108,7 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
             case 0:
                 // JWT token verification
                 try {
-                    jsonwebtoken_1.default.verify(req.body.token, process.env.TOKEN_SECRET);
+                    jsonwebtoken_1.default.verify(req.get("token"), process.env.TOKEN_SECRET);
                 }
                 catch (err) {
                     res.status(401);

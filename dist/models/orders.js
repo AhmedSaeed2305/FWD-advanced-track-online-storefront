@@ -94,7 +94,35 @@ var OrderStore = /** @class */ (function () {
     // create new orders
     OrderStore.prototype.create = function (order) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, err_3;
+            var conn, orderSql, orderResult, productSql, detailsResult, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        return [4 /*yield*/, database_1.client.connect()];
+                    case 1:
+                        conn = _a.sent();
+                        orderSql = "INSERT INTO orders_table (status, user_id) VALUES (".concat(order.status, ", ").concat(order.userId, ") RETURNING *;");
+                        return [4 /*yield*/, conn.query(orderSql)];
+                    case 2:
+                        orderResult = _a.sent();
+                        productSql = "INSERT INTO order_products (quantity, product_id, order_id) VALUES (".concat(order.quantity, ", ").concat(order.productId, ", ").concat(orderResult.rows[0].order_id, ") RETURNING *;");
+                        return [4 /*yield*/, conn.query(productSql)];
+                    case 3:
+                        detailsResult = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, detailsResult.rows[0]];
+                    case 4:
+                        err_3 = _a.sent();
+                        throw new Error("Couldn't create new order, error: ".concat(err_3));
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    OrderStore.prototype.addProducts = function (order) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, err_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -102,15 +130,15 @@ var OrderStore = /** @class */ (function () {
                         return [4 /*yield*/, database_1.client.connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = "INSERT INTO orders_table (quantity, status, product_id, user_id) VALUES (".concat(order.quantity, ", ").concat(order.status, ", ").concat(order.productId, ",").concat(order.userId, ") RETURNING *");
+                        sql = "INSERT INTO order_products (quantity, order_id, product_id) VALUES (".concat(order.quantity, ", ").concat(order.orderId, ", ").concat(order.productId, ") RETURNING *;");
                         return [4 /*yield*/, conn.query(sql)];
                     case 2:
                         result = _a.sent();
                         conn.release();
                         return [2 /*return*/, result.rows[0]];
                     case 3:
-                        err_3 = _a.sent();
-                        throw new Error("Couldn't create new order, error: ".concat(err_3));
+                        err_4 = _a.sent();
+                        throw new Error("Couldn't add product, error: ".concat(err_4));
                     case 4: return [2 /*return*/];
                 }
             });
