@@ -11,7 +11,7 @@ const usersStore = new UserStore();
 const index = async (req: express.Request, res: express.Response) => {
   // JWT token verification
   try {
-    jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
+    jwt.verify(req.get("token") as string, process.env.TOKEN_SECRET as string);
   } catch (err) {
     res.status(401);
     res.json(`Invalid token, ${err}`);
@@ -29,7 +29,7 @@ const index = async (req: express.Request, res: express.Response) => {
 const show = async (req: express.Request, res: express.Response) => {
   // JWT token verification
   try {
-    jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
+    jwt.verify(req.get("token") as string, process.env.TOKEN_SECRET as string);
   } catch (err) {
     res.status(401);
     res.json(`Invalid token ${err}`);
