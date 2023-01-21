@@ -1,7 +1,7 @@
 import { client } from "../database";
 
 export type Order = {
-  id: number;
+  orderId: number;
   quantity: number;
   status: boolean;
   checkStatus: string;
@@ -38,12 +38,26 @@ export class OrderStore {
   async create(order: Order): Promise<Order> {
     try {
       const conn = await client.connect();
-      const sql = `INSERT INTO orders_table (quantity, status, product_id, user_id) VALUES (${order.quantity}, ${order.status}, ${order.productId},${order.userId}) RETURNING *`;
+      const orderSql = `INSERT INTO orders_table (status, user_id) VALUES (${order.status}, ${order.userId}) RETURNING *;`;
+      const orderResult = await conn.query(orderSql);
+      const productSql = `INSERT INTO order_products (quantity, product_id, order_id) VALUES (${order.quantity}, ${order.productId}, ${orderResult.rows[0].order_id}) RETURNING *;`;
+      const detailsResult = await conn.query(productSql);
+      conn.release();
+      return detailsResult.rows[0];
+    } catch (err) {
+      throw new Error(`Couldn't create new order, error: ${err}`);
+    }
+  }
+
+  async addProducts(order: Order): Promise<Order> {
+    try {
+      const conn = await client.connect();
+      const sql = `INSERT INTO order_products (quantity, order_id, product_id) VALUES (${order.quantity}, ${order.orderId}, ${order.productId}) RETURNING *;`;
       const result = await conn.query(sql);
       conn.release();
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Couldn't create new order, error: ${err}`);
+      throw new Error(`Couldn't add product, error: ${err}`);
     }
   }
 }
