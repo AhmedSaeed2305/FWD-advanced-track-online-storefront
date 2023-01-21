@@ -56,3 +56,4 @@ These are the notes from a meeting with the frontend developer that describe wha
 1 - Table: user_table(user_id: serial perimary key, first_name: varchar, last_name: varchar, password: varchar)
 2 - Table: products_table(product_id: serial perimary key, name: varchar, price: integer, category: varchar)
 3 - Table: orders_table(id: serial perimary key, quantity: integer, status: boolean, user_id: integer [references user_table], product_id: integer [references products_table])
+4 - Table: orders_product(id: serial perimary key, quantity: integer, order_id: integer [references orders_table], product_id: integer [references products_table])
