@@ -20,7 +20,7 @@ const checkSatatus = (order: Order) => {
 const index = async (req: express.Request, res: express.Response) => {
   // JWT verification
   try {
-    jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
+    jwt.verify(req.get("token") as string, process.env.TOKEN_SECRET as string);
   } catch (err) {
     res.status(401);
     res.json(`Invalid token, ${err}`);
@@ -41,7 +41,7 @@ const index = async (req: express.Request, res: express.Response) => {
 const show = async (req: express.Request, res: express.Response) => {
   // JWT verification
   try {
-    jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
+    jwt.verify(req.get("token") as string, process.env.TOKEN_SECRET as string);
   } catch (err) {
     res.status(401);
     res.json(`Invalid token, ${err}`);
@@ -78,12 +78,31 @@ const create = async (req: express.Request, res: express.Response) => {
     res.json(err);
   }
 };
+const addProducts = async (req: express.Request, res: express.Response) => {
+  // JWT verification
+  try {
+    jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
+  } catch (err) {
+    res.status(401);
+    res.json(`Invalid token, ${err}`);
+    return;
+  }
+
+  try {
+    const order = await ordersStore.addProducts(req.body);
+    res.json(order);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+};
 
 // routes handlers methods
 const ordersRoutes = (app: express.Application) => {
   app.get("/orders", index);
   app.get("/order/user-id", show);
   app.post("/new-order", create);
+  app.post("/add-products", addProducts);
 };
 
 export default ordersRoutes;
