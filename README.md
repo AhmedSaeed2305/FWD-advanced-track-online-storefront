@@ -4,7 +4,7 @@
 
 ### the database runs on port: 3001
 
-### the server runs on prot:3000
+### the server runs on prot: 3000
 
 # Connect to database
 
@@ -21,45 +21,50 @@ BCRYPT_PASSWORD=extraPassword
 SALT_ROUNDS=10
 TOKEN_SECRET=secretString
 
-2 - Create a database on postgresql database with the name "online_storefront
-3 - install all the dependencies for the project by using the following command: "npm install"
+2 - install all the dependencies for the project by using the following command: "npm install"
+1 - Create a database on postgresql database with the name "online_storefront
 4 - Then you can run the following command in the console to create the tables required for the database and link them together: "db-migrate up"
 
 ## schema structure
 
 1 - Table: user_table(user_id: serial perimary key, first_name: varchar, last_name: varchar, password: varchar)
 2 - Table: products_table(product_id: serial perimary key, name: varchar, price: integer, category: varchar)
-3 - Table: orders_table(id: serial perimary key, quantity: integer, status: boolean, user_id: integer [references user_table], product_id: integer [references products_table])
+3 - Table: orders_table(id: serial perimary key, status: boolean, user_id: integer [references user_table])
+4 - Table: orders_product(id: serial perimary key, quantity: integer, order_id: integer [references orders_table], product_id: integer [references products_table])
 
 # USERS model
 
 ## After you can start using the provided end point to create a user and get a new JWT
 
-1 - Create [new JWT token generated] "/new-user" [POST]
+1 - Create new user [new JWT token generated] "/new-user" [POST]
 2 - first name, last name and password must be provided in the body of the request
 3 - the password will get hashed and will not be stored as entered
 4 - there is an authentication method for future password verifications to login
 
-## Next you can show or index all users using the following end points and you have to supply the JWT for each
+## Next you can show one user or index all users using the following end points and you have to supply the JWT for each
 
-- Show [token required] "user?id=" [GET] id must be provided as a query params in the header
+- Show [token required] "user?id=" [GET] user id must be provided as a query params in the url
 - Index [token required] "/users" [GET]
 
 # PRODUCTS model
 
 ## Then you can Create, get one product by id or get all products and you have to supply the JWT for each also
 
-1 - Create [token required] "/new-product" [POST] must provide name, price, category in the body of the request
-2 - Show "/product?id=" [GET] id must be provided as a query params in the header
+1 - Create [token required] "/new-product" [POST] must provide name, price, category and token in the body of the request
+2 - Show "/product?id=" [GET] product id must be provided as a query params in the url
 3 - Index "/products" [GET]
 
 # ORDERS model
 
-## Eventually you can Create new order or get current order or see all orders for a specific user with user id and with JWT
+## After you can Create first new order or get current order or see all orders for a specific user with user id and with JWT
 
-- Create new order [token required] "/new-order" [POST] quantity, status: boolean, productId and userId must be provided in the body of the request
-- Current Order by user (args: user id)[token required] "/order/user-id?id=" [GET] id must be provided as a query params in the header
-- Show all orders by user Id [Token required] "/orders?id=" [GET] id must be provided as a query params in the header
+- Create new order [token required] "/new-order" [POST] status: boolean, userId, quantity: boolean, productId and token must be provided in the body of the request
+- Current Order by user (args: user id)[token required] "/order/user-id?id=" [GET] user id must be provided as a query params in the URL
+- Show all orders by user Id [Token required] "/orders?id=" [GET] user id must be provided as a query params in the URL
+
+## Eventually you can add products to the order
+
+- Add more products to the order at this route [token required] "/add-products" [POST] quantity, orderId, productId and token must be provided in the body of the request
 
 ### to run unit tests "npm run test" script is used.
 
