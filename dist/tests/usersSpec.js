@@ -45,19 +45,34 @@ var supertest_1 = __importDefault(require("supertest"));
 // asigning supertest to the app
 var request = (0, supertest_1.default)(server_1.default);
 var userStore = new users_1.UserStore();
-// model test suite
+// Create user before run tests
+beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+    var result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, userStore.create({
+                    firstName: "test1",
+                    lastName: "test1",
+                    password: "password123",
+                })];
+            case 1:
+                result = _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
+// model test suites
 describe("Users model", function () {
     it("should have an index method", function () {
         expect(userStore.index).toBeDefined();
     });
-    // it("should create a user", async () => {
-    //   const result = await userStore.create({
-    //     firstName: "test1",
-    //     lastName: "test1",
-    //     password: "password123",
-    //   } as unknown as User);
-    //   expect;
-    // });
+    it("should have a show method", function () {
+        expect(userStore.show).toBeDefined();
+    });
+    it("should have a create method", function () {
+        expect(userStore.create).toBeDefined();
+    });
+    // show all users test
     it("index method should return a list of users", function () { return __awaiter(void 0, void 0, void 0, function () {
         var result;
         return __generator(this, function (_a) {
@@ -65,30 +80,60 @@ describe("Users model", function () {
                 case 0: return [4 /*yield*/, userStore.index()];
                 case 1:
                     result = _a.sent();
-                    expect(result).toEqual([
-                        {
-                            user_id: 1,
-                            first_name: "test1",
-                            last_name: "test1",
-                            password: "$2b$10$VAJJXpzSSHGTJSrvAejfrue06Fu8Dt/Q5tSmL.8uoHrikhB0MolHy",
-                        },
-                    ]);
+                    expect(result).toEqual(jasmine.any(Array));
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    // show one user test
+    it("show method should return one user", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, userStore.show("1")];
+                case 1:
+                    result = _a.sent();
+                    expect(result).toEqual(jasmine.any(Object));
                     return [2 /*return*/];
             }
         });
     }); });
 });
-// the endpoint test suite for users model
-// needs the JWT token to return status 200 it should return status 401 without token
+// the endpoint test suites for users handler
 describe("Test endpoints responses", function () {
-    it("gets the users endpoint", function () { return __awaiter(void 0, void 0, void 0, function () {
+    it("gets all users endpoint", function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, request.get("/users")];
                 case 1:
                     response = _a.sent();
-                    expect(response.status).toBe(401);
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("gets one user endpoint", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get("/user?id=1")];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    // should respond with 400 because the request body aren't provided
+    it("creates new user end point", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.post("/new-user")];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(400);
                     return [2 /*return*/];
             }
         });

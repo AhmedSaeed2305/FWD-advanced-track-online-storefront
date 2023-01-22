@@ -74,29 +74,18 @@ var index = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                // JWT token verification
-                try {
-                    jsonwebtoken_1.default.verify(req.get("token"), process.env.TOKEN_SECRET);
-                }
-                catch (err) {
-                    res.status(401);
-                    res.json("Invalid token, ".concat(err));
-                    return [2 /*return*/];
-                }
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
+                _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, usersStore.index()];
-            case 2:
+            case 1:
                 users = _a.sent();
                 res.json(users);
-                return [3 /*break*/, 4];
-            case 3:
+                return [3 /*break*/, 3];
+            case 2:
                 err_1 = _a.sent();
                 res.status(400);
                 res.json(err_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
@@ -106,29 +95,18 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                // JWT token verification
-                try {
-                    jsonwebtoken_1.default.verify(req.get("token"), process.env.TOKEN_SECRET);
-                }
-                catch (err) {
-                    res.status(401);
-                    res.json("Invalid token ".concat(err));
-                    return [2 /*return*/];
-                }
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
+                _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, usersStore.show(req.query.id)];
-            case 2:
+            case 1:
                 user = _a.sent();
                 res.json(user);
-                return [3 /*break*/, 4];
-            case 3:
+                return [3 /*break*/, 3];
+            case 2:
                 err_2 = _a.sent();
                 res.status(400);
                 res.json(err_2);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };

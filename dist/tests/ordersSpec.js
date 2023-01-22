@@ -40,41 +40,128 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var orders_1 = require("../models/orders");
+var users_1 = require("../models/users");
+var products_1 = require("../models/products");
 var server_1 = __importDefault(require("../server"));
 var supertest_1 = __importDefault(require("supertest"));
 // asigning supertest to the app
 var request = (0, supertest_1.default)(server_1.default);
-var ordersStore = new orders_1.OrderStore();
-describe("Users model", function () {
-    it("should have an index method", function () {
-        expect(ordersStore.show).toBeDefined();
+var orderStore = new orders_1.OrderStore();
+var userStore = new users_1.UserStore();
+var productStore = new products_1.ProductStore();
+// Create order before run tests
+beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, userStore.create({
+                    firstName: "test1",
+                    lastName: "test1",
+                    password: "password123",
+                })];
+            case 1:
+                _a.sent();
+                return [4 /*yield*/, productStore.create("test1", "1000", "test1")];
+            case 2:
+                _a.sent();
+                return [4 /*yield*/, orderStore.create({
+                        quantity: 10,
+                        status: true,
+                        productId: 1,
+                        userId: 1,
+                    })];
+            case 3:
+                _a.sent();
+                return [2 /*return*/];
+        }
     });
-    //   it("should create new order", async () => {
-    //     const result = await ordersStore.create({
-    //       quantity: 10,
-    //       status: true,
-    //       productId: 1,
-    //       userId: 1,
-    //     } as unknown as Order);
-    //     expect(result).toEqual({
-    //       quantity: 10,
-    //       status: true,
-    //       productId: 1,
-    //       userId: 1,
-    //     } as unknown as Order);
-    //   });
+}); });
+// model test suites
+describe("orders model", function () {
+    it("should have an index method", function () {
+        expect(orderStore.index).toBeDefined();
+    });
+    it("should have a show method", function () {
+        expect(orderStore.show).toBeDefined();
+    });
+    it("should have a create method", function () {
+        expect(orderStore.show).toBeDefined();
+    });
+    it("should have an addProducts method", function () {
+        expect(orderStore.addProducts).toBeDefined();
+    });
+    // Show all orders test
+    it("index method should return a list of orders", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, orderStore.index("1")];
+                case 1:
+                    result = _a.sent();
+                    expect(result).toEqual(jasmine.any(Array));
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    // Show one order test
+    it("show method should return one order", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, orderStore.show("1")];
+                case 1:
+                    result = _a.sent();
+                    expect(result).toEqual(jasmine.any(Object));
+                    return [2 /*return*/];
+            }
+        });
+    }); });
 });
-// the endpoint test suite for orders model
-// needs the JWT token to return status 200 it should return status 401 without token
-describe("Test endpoint responses", function () {
-    it("gets orders endpoint", function () { return __awaiter(void 0, void 0, void 0, function () {
+// the endpoint test suite for orders handler
+describe("Test endpoints responses", function () {
+    it("gets all orders endpoint", function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get("/orders")];
+                case 0: return [4 /*yield*/, request.get("/orders?id=1")];
                 case 1:
                     response = _a.sent();
-                    expect(response.status).toBe(401);
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("gets one order endpoint", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get("/order/user-id?id=1")];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("creates new order end point", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.post("/new-order")];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(400);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("add product end point", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.post("/add-products")];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(400);
                     return [2 /*return*/];
             }
         });

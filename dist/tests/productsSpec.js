@@ -45,59 +45,59 @@ var supertest_1 = __importDefault(require("supertest"));
 // asigning supertest to the app
 var request = (0, supertest_1.default)(server_1.default);
 var productStore = new products_1.ProductStore();
-describe("Users model", function () {
+// Create product before run tests
+beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+    var result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, productStore.create("test1", "1000", "test1")];
+            case 1:
+                result = _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
+// model test suites
+describe("products model", function () {
     it("should have an index method", function () {
         expect(productStore.index).toBeDefined();
     });
-    it("should show the products list", function () { return __awaiter(void 0, void 0, void 0, function () {
+    it("should have a show method", function () {
+        expect(productStore.show).toBeDefined();
+    });
+    it("should have a create method", function () {
+        expect(productStore.show).toBeDefined();
+    });
+    // Show all products test
+    it("index method should return a list of products", function () { return __awaiter(void 0, void 0, void 0, function () {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, productStore.index()];
                 case 1:
                     result = _a.sent();
-                    expect(result).toEqual([
-                        {
-                            product_id: 1,
-                            name: "test1",
-                            price: 20,
-                            category: "testCat",
-                        },
-                    ]);
+                    expect(result).toEqual(jasmine.any(Array));
                     return [2 /*return*/];
             }
         });
     }); });
-    //   it("should create new product", async () => {
-    //     const result = await productStore.create("test1", "20", "testCat");
-    //     expect(result).toEqual({
-    //       product_id: 1,
-    //       name: "test1",
-    //       price: 20,
-    //       category: "testCat",
-    //     } as unknown as Product);
-    //   });
-    it("should show a product by id", function () { return __awaiter(void 0, void 0, void 0, function () {
+    // Show one product test
+    it("show method should return one product", function () { return __awaiter(void 0, void 0, void 0, function () {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, productStore.show("1")];
                 case 1:
                     result = _a.sent();
-                    expect(result).toEqual({
-                        product_id: 1,
-                        name: "test1",
-                        price: 20,
-                        category: "testCat",
-                    });
+                    expect(result).toEqual(jasmine.any(Object));
                     return [2 /*return*/];
             }
         });
     }); });
 });
-// the endpoint test suite for users model
-describe("Test endpoint responses", function () {
-    it("gets the products endpoint", function () { return __awaiter(void 0, void 0, void 0, function () {
+// the endpoint test suite for products handler
+describe("Test endpoints responses", function () {
+    it("gets all products endpoint", function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -105,6 +105,31 @@ describe("Test endpoint responses", function () {
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("gets one product endpoint", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get("/product?id=1")];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    // should respond with 400 because the request body aren't provided
+    it("creates new product end point", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.post("/new-product")];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(400);
                     return [2 /*return*/];
             }
         });

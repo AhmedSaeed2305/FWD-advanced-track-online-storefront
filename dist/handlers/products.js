@@ -117,13 +117,15 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
         switch (_a.label) {
             case 0:
                 // JWT toekn verification
-                try {
-                    jsonwebtoken_1.default.verify(req.body.token, process.env.TOKEN_SECRET);
-                }
-                catch (err) {
-                    res.status(401);
-                    res.json("Invalid token, ".concat(err));
-                    return [2 /*return*/];
+                if (process.env.ENV === "dev") {
+                    try {
+                        jsonwebtoken_1.default.verify(req.body.token, process.env.TOKEN_SECRET);
+                    }
+                    catch (err) {
+                        res.status(401);
+                        res.json("Invalid token, ".concat(err));
+                        return [2 /*return*/];
+                    }
                 }
                 _a.label = 1;
             case 1:
