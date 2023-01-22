@@ -19,12 +19,17 @@ const checkSatatus = (order: Order) => {
 // index method
 const index = async (req: express.Request, res: express.Response) => {
   // JWT verification
-  try {
-    jwt.verify(req.get("token") as string, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json(`Invalid token, ${err}`);
-    return;
+  if (process.env.ENV === "dev") {
+    try {
+      jwt.verify(
+        req.get("token") as string,
+        process.env.TOKEN_SECRET as string
+      );
+    } catch (err) {
+      res.status(401);
+      res.json(`Invalid token, ${err}`);
+      return;
+    }
   }
 
   try {
@@ -40,12 +45,17 @@ const index = async (req: express.Request, res: express.Response) => {
 // show method
 const show = async (req: express.Request, res: express.Response) => {
   // JWT verification
-  try {
-    jwt.verify(req.get("token") as string, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json(`Invalid token, ${err}`);
-    return;
+  if (process.env.ENV === "dev") {
+    try {
+      jwt.verify(
+        req.get("token") as string,
+        process.env.TOKEN_SECRET as string
+      );
+    } catch (err) {
+      res.status(401);
+      res.json(`Invalid token, ${err}`);
+      return;
+    }
   }
 
   try {
@@ -61,12 +71,14 @@ const show = async (req: express.Request, res: express.Response) => {
 // create method
 const create = async (req: express.Request, res: express.Response) => {
   // JWT verification
-  try {
-    jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json(`Invalid token, ${err}`);
-    return;
+  if (process.env.ENV === "dev") {
+    try {
+      jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
+    } catch (err) {
+      res.status(401);
+      res.json(`Invalid token, ${err}`);
+      return;
+    }
   }
 
   try {
@@ -80,12 +92,14 @@ const create = async (req: express.Request, res: express.Response) => {
 };
 const addProducts = async (req: express.Request, res: express.Response) => {
   // JWT verification
-  try {
-    jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json(`Invalid token, ${err}`);
-    return;
+  if (process.env.ENV === "dev") {
+    try {
+      jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
+    } catch (err) {
+      res.status(401);
+      res.json(`Invalid token, ${err}`);
+      return;
+    }
   }
 
   try {
