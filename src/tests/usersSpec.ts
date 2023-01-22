@@ -36,10 +36,19 @@ describe("Users model", () => {
 });
 
 // the endpoint test suite for users model
-// needs the JWT token to return status 200 it should return status 401 without token
 describe("Test endpoints responses", () => {
-  it("gets the users endpoint", async () => {
+  it("gets all users endpoint", async () => {
     const response = await request.get("/users");
     expect(response.status).toBe(200);
+  });
+
+  it("gets one user endpoint", async () => {
+    const response = await request.get("/user?id=1");
+    expect(response.status).toBe(200);
+  });
+  // should respond with 400 because the body params aren't provided
+  it("creates new user end point", async () => {
+    const response = await request.post("/new-user");
+    expect(response.status).toBe(400);
   });
 });
