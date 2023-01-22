@@ -9,14 +9,6 @@ const usersStore = new UserStore();
 
 // index method
 const index = async (req: express.Request, res: express.Response) => {
-  // JWT token verification
-  try {
-    jwt.verify(req.get("token") as string, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json(`Invalid token, ${err}`);
-    return;
-  }
   try {
     const users = await usersStore.index();
     res.json(users);
