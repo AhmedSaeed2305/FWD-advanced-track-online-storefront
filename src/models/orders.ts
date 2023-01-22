@@ -26,7 +26,7 @@ export class OrderStore {
   async show(userId: string): Promise<Order> {
     try {
       const conn = await client.connect();
-      const sql = `SELECT * FROM orders_table WHERE user_id=${userId} ORDER BY id DESC LIMIT 1;`;
+      const sql = `SELECT * FROM orders_table WHERE user_id=${userId} ORDER BY order_id DESC LIMIT 1;`;
       const result = await conn.query(sql);
       conn.release();
       return result.rows[0];
