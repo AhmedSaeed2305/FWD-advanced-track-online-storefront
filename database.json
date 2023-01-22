@@ -1,18 +1,18 @@
 {
   "dev": {
     "driver": "pg",
-    "host": "127.0.0.1",
-    "port": "3001",
-    "database": "online_storefront",
-    "user": "postgres",
-    "password": "password123"
+    "host": { "ENV": "POSTGRES_HOST" },
+    "port": { "ENV": "POSTGRES_PORT" },
+    "database": { "ENV": "POSTGRES_DB" },
+    "user": { "ENV": "POSTGRES_USER" },
+    "password": { "ENV": "POSTGRES_PASSWORD" }
   },
   "test": {
     "driver": "pg",
-    "host": "127.0.0.1",
-    "port": "3001",
-    "database": "online_storefront",
-    "user": "postgres",
-    "password": "password123"
+    "host": { "ENV": "POSTGRES_HOST" },
+    "port": { "ENV": "POSTGRES_PORT" },
+    "database": { "ENV": "POSTGRES_TEST_DB" },
+    "user": { "ENV": "POSTGRES_USER" },
+    "password": { "ENV": "POSTGRES_PASSWORD" }
   }
 }
