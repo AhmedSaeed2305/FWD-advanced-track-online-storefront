@@ -6,36 +6,40 @@ import supertest from "supertest";
 const request = supertest(app);
 
 const userStore = new UserStore();
-// model test suite
+
+// Create user before run tests
+beforeAll(async () => {
+  const result = await userStore.create({
+    firstName: "test1",
+    lastName: "test1",
+    password: "password123",
+  } as unknown as User);
+});
+// model test suites
 describe("Users model", () => {
   it("should have an index method", () => {
     expect(userStore.index).toBeDefined();
   });
-  it("should have an index method", () => {
+  it("should have a show method", () => {
     expect(userStore.show).toBeDefined();
   });
-
-  beforeAll(async () => {
-    const result = await userStore.create({
-      firstName: "test1",
-      lastName: "test1",
-      password: "password123",
-    } as unknown as User);
-    return result;
+  it("should have a create method", () => {
+    expect(userStore.create).toBeDefined();
   });
 
+  // show all users test
   it("index method should return a list of users", async () => {
     const result = await userStore.index();
     expect(result).toEqual(jasmine.any(Array));
   });
-
+  // show one user test
   it("show method should return one user", async () => {
     const result = await userStore.show("1");
     expect(result).toEqual(jasmine.any(Object));
   });
 });
 
-// the endpoint test suite for users model
+// the endpoint test suites for users handler
 describe("Test endpoints responses", () => {
   it("gets all users endpoint", async () => {
     const response = await request.get("/users");
@@ -46,7 +50,7 @@ describe("Test endpoints responses", () => {
     const response = await request.get("/user?id=1");
     expect(response.status).toBe(200);
   });
-  // should respond with 400 because the body params aren't provided
+  // should respond with 400 because the request body aren't provided
   it("creates new user end point", async () => {
     const response = await request.post("/new-user");
     expect(response.status).toBe(400);
