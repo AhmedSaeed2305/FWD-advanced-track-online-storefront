@@ -43,8 +43,8 @@ TOKEN_SECRET=secretString
 
 ## Next you can show one user or index all users using the following end points and you have to supply the JWT for each
 
-- Show [token required] "user?id=" [GET] user id must be provided as a query params in the url
-- Index [token required] "/users" [GET]
+- Show "user?id=" [GET] user id must be provided as a query params in the url
+- Index "/users" [GET]
 
 # PRODUCTS model
 
