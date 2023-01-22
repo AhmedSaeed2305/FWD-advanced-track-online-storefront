@@ -32,13 +32,16 @@ const show = async (req: express.Request, res: express.Response) => {
 // create method
 const create = async (req: express.Request, res: express.Response) => {
   // JWT toekn verification
-  try {
-    jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json(`Invalid token, ${err}`);
-    return;
+  if (process.env.ENV === "dev") {
+    try {
+      jwt.verify(req.body.token, process.env.TOKEN_SECRET as string);
+    } catch (err) {
+      res.status(401);
+      res.json(`Invalid token, ${err}`);
+      return;
+    }
   }
+
   try {
     const product = await productStore.create(
       req.body.name,
