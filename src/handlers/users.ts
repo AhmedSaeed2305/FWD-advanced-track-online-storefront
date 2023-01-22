@@ -27,14 +27,6 @@ const index = async (req: express.Request, res: express.Response) => {
 };
 // show method
 const show = async (req: express.Request, res: express.Response) => {
-  // JWT token verification
-  try {
-    jwt.verify(req.get("token") as string, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json(`Invalid token ${err}`);
-    return;
-  }
   try {
     const user = await usersStore.show(req.query.id as string);
     res.json(user);
@@ -47,7 +39,7 @@ const show = async (req: express.Request, res: express.Response) => {
 const create = async (req: express.Request, res: express.Response) => {
   try {
     const newUser = await usersStore.create(req.body);
-    // JWT creation
+    // JWT create new token
     const token = jwt.sign(
       { user: newUser },
       process.env.TOKEN_SECRET as string
