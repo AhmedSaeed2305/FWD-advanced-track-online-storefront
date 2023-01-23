@@ -9,6 +9,19 @@ const usersStore = new UserStore();
 
 // index method
 const index = async (req: express.Request, res: express.Response) => {
+  // JWT verification
+  if (process.env.ENV === "dev") {
+    try {
+      jwt.verify(
+        req.get("token") as string,
+        process.env.TOKEN_SECRET as string
+      );
+    } catch (err) {
+      res.status(401);
+      res.json(`Invalid token, ${err}`);
+      return;
+    }
+  }
   try {
     const users = await usersStore.index();
     res.json(users);
@@ -19,6 +32,19 @@ const index = async (req: express.Request, res: express.Response) => {
 };
 // show method
 const show = async (req: express.Request, res: express.Response) => {
+  // JWT verification
+  if (process.env.ENV === "dev") {
+    try {
+      jwt.verify(
+        req.get("token") as string,
+        process.env.TOKEN_SECRET as string
+      );
+    } catch (err) {
+      res.status(401);
+      res.json(`Invalid token, ${err}`);
+      return;
+    }
+  }
   try {
     const user = await usersStore.show(req.query.id as string);
     res.json(user);
